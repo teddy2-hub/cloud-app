@@ -1,0 +1,50 @@
+<div class="row my-5 justify-content-center">
+    <div class="col-8 col-md-6 col-lg-4">
+        <h3 class="text-center mb-5">회원가입</h3>
+        <form id="join" name="frm" method="post">
+            <div class="input-group my-2">
+                <div class="input-group-text">이 메 일</div>
+                <input class="form-control" id="email" name="email" value="tomato@hot.com" />
+            </div>
+            <div class="input-group">
+                <div class="input-group-text">비밀번호</div>
+                <input class="form-control" id="password" name="password" type="password" value="12345678" />
+            </div>
+            <div class="my-3">
+                <button class="btn btn-success w-100">회원가입</button>
+            </div>
+            <div class="text-end mt-3"><a href="/login">로그인</a></div>
+        </form>
+    </div>
+</div>
+<script type="module">
+    import { app } from '/javascripts/firebase.js'
+    import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js'
+    const auth = getAuth(app)
+    console.log(auth);
+    const join = document.querySelector("#join")
+    //button 디폴트: submit -> 굳이 click이벤트로 처리하지 않아도 전송됌
+    //<input type='button'>
+    //submit이슈가 있어서 서버로 전송 후에 새로고침이 발동함. - 이벤트 전이가 발생해서
+    //event.preventDefault() 반드시 호출하여 이벤트 전이를 막은 것
+    join.addEventListener('submit', function (event) {
+        event.preventDefault()
+        console.log('회원가입 호출 성공');
+        // const u_email = document.querySelector("#email") HTMLElement
+        const u_email = document.querySelector("#email").value
+        const u_pw = document.querySelector("#password").value
+        console.log(`u_email:${u_email}, u_pw:${u_pw}`);
+        createUserWithEmailAndPassword(auth, u_email, u_pw)
+            .then((data) => {
+                //회원가입 성공시 함수 파라이터 인증객체와 이메일, 비번을 비교 -> 일치 시 응답으로 메세지 response
+                //=콜백함수
+                console.log(data);
+                //회원가입성공 시 로그인화면으로
+                // location.href = "/login"  //get, post 차이를 확인하기 위해 주석처리함
+            })//end of EmailAndPassword
+            .catch((error) => {
+                console.log('🔥 Firebase Error:', error.code, error.message);
+                alert(`에러코드: ${error.code}\n메시지: ${error.message}`);
+            });
+    });
+</script>

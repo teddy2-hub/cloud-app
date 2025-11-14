@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function login() {
+            //함수 호이스팅으로 로그인 함수 선언
+            //document -> getRest.html문서 전체를 받는 것 - 그 중 form태그만 받는것
+            //http://localhost:5500/public/html/getRest.html
+            //로그인버튼 클릭 -> login()호출 -> 전송 -> 쿼리값에 노출(보안취약)
+            //http://localhost:5500/public/html/getRestAction.html?email=kiwi@hot.com&password=12345678
+            document.querySelector("#f_login").submit()
+        }
+    </script>
+</head>
+
+<body>
+    <!-- get, post 차이 -->
+    <form id="f_login" method="post" action="getRestAction.html">
+        <!-- 액션처리 html-getRestAction -->
+        email : <input type="text" id="email" name="email"><br>
+        <input type="button" value="로그인" onclick="login()">
+    </form>
+</body>
+
+</html>
