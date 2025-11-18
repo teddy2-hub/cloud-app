@@ -19,9 +19,10 @@
 
 <body>
     <!-- get, post 차이 -->
-    <form id="f_login" method="post" action="getRestAction.html">
+    <form id="f_login" method="get" action="getRestAction.html">
         <!-- 액션처리 html-getRestAction -->
         email : <input type="text" id="email" name="email"><br>
+        password : <input type="password" id="password" name="password"><br>
         <input type="button" value="로그인" onclick="login()">
     </form>
 </body>

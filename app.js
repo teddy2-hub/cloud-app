@@ -1,15 +1,18 @@
-// app.js
+//웹 어플리케이션을 위한 기본 설정을 가짐
+//모듈을 로딩하고 템플릿 엔진 설정, 라우트 설정
+//상단부에는 사용할 모듈을 로딩하는 코드 작성
+//외부 모듈을 해당 파일에 사용하고 싶다면 require()함수 호출
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-// 라우터들
 var indexRouter = require('./routes/index');
+//아래는 라우팅을 지원하는 모듈이 있는 물리적인 위치값
 var usersRouter = require('./routes/users');
-// ❌ youtube 같은 거 지금 안 쓸 거면 아예 require 하지 마세요.
-// var youtubeRouter = require('./routes/youtube');
+const calendarRouter = require('./routes/calendar')
+const youtubeRouter = require('./routes/youtube')
 
 var app = express();
 
@@ -23,24 +26,24 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ✅ 라우터 연결 (오직 함수만 넘기기)
-app.use('/', indexRouter);      // GET /, /login, /signup 등
-app.use('/users', usersRouter); // GET /users/...
+app.use('/', indexRouter);
+app.use('/users', usersRouter); //********** 
+app.use('/calendar', calendarRouter)
+//insert here
+app.use('/youtube', youtubeRouter)
 
-// ❌ youtube 관련 사용 안 할 거면 이 줄도 절대 쓰지 마세요.
-// app.use('/youtube', youtubeRouter);
-
-// 404 핸들러 (어떤 라우트에도 안 걸렸을 때)
+// catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  console.log('404 NOT FOUND =>', req.method, req.originalUrl);
   next(createError(404));
 });
 
-// 에러 핸들러
+// error handler
 app.use(function (err, req, res, next) {
+  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });

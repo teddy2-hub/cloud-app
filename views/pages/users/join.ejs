@@ -23,6 +23,7 @@
     const auth = getAuth(app)
     console.log(auth);
     const join = document.querySelector("#join")
+
     //button 디폴트: submit -> 굳이 click이벤트로 처리하지 않아도 전송됌
     //<input type='button'>
     //submit이슈가 있어서 서버로 전송 후에 새로고침이 발동함. - 이벤트 전이가 발생해서
@@ -41,10 +42,11 @@
                 console.log(data);
                 //회원가입성공 시 로그인화면으로
                 // location.href = "/login"  //get, post 차이를 확인하기 위해 주석처리함
-            })//end of EmailAndPassword
-            .catch((error) => {
-                console.log('🔥 Firebase Error:', error.code, error.message);
-                alert(`에러코드: ${error.code}\n메시지: ${error.message}`);
-            });
+            })//end of createUserWithEmailAndPassword
+            .catch((error) => { //에러가 발생하면 그때 실행됌
+                const errorCode = error.code
+                const errorMessage = error.message
+                console.log(`${errorCode}, ${errorMessage}`);
+            })
     });
 </script>
